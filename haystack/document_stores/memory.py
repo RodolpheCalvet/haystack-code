@@ -14,7 +14,7 @@ import re
 import numpy as np
 import torch
 from tqdm.auto import tqdm
-import rank_bm25
+#import rank_bm25
 
 from haystack.schema import Document, FilterType, Label
 from haystack.errors import DuplicateDocumentError, DocumentStoreError
