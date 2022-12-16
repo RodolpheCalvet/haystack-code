@@ -18,8 +18,7 @@ print(f'host : {host}')
 document_store = ElasticsearchDocumentStore(host=host, username="", password="", index="document")
 doc_dir = "C:/dataHaystack/shakespeare"
 mod_dir = "C:/dataHaystack/mods_shakespeare"
-wikiWill = "https://github.com/RodolpheCalvet/haystack-code/data/WilliWiki.zip"
-
+wikiWill = "https://github.com/RodolpheCalvet/haystack-code/raw/main/data/WilliWiki.zip"
 fetch_archive_from_http(url=wikiWill, output_dir=doc_dir)
 
 docs = convert_files_to_docs(dir_path=doc_dir, clean_func=clean_wiki_text, split_paragraphs=True)
