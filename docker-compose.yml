@@ -16,6 +16,7 @@ services:
       elasticsearch:
         condition: service_healthy
 
+
   elasticsearch:
     # This image is "ready-to-query" with some indexed articles
     # about countries and capital cities from Wikipedia:
@@ -31,6 +32,7 @@ services:
         interval: 10s
         timeout: 1s
         retries: 10
+
 
   ui:
     depends_on:
@@ -51,3 +53,4 @@ services:
       - DEFAULT_QUESTION_AT_STARTUP
       - DEFAULT_DOCS_FROM_RETRIEVER
       - DEFAULT_NUMBER_OF_ANSWERS
+
