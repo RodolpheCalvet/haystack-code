@@ -6,7 +6,7 @@ from haystack.utils import clean_wiki_text, convert_files_to_docs, fetch_archive
 host = os.environ.get("ELASTICSEARCH_HOST", "localhost")
 print(f'host : {host}')
 
-document_store = ElasticsearchDocumentStore(host='elasticsearch', username="", password="", index="document")
+document_store = ElasticsearchDocumentStore(username="", password="", index="document")
 doc_dir = "C:/dataHaystack/shakespeare"
 mod_dir = "C:/dataHaystack/mods_shakespeare"
 wikiWill = "https://github.com/RodolpheCalvet/haystack-code/raw/main/data/wiki.txt"
@@ -14,6 +14,7 @@ fetch_archive_from_http(url=wikiWill, output_dir=doc_dir)
 
 docs = convert_files_to_docs(dir_path=doc_dir, clean_func=clean_wiki_text, split_paragraphs=True)
 
+document_store.delete_documents()
 document_store.write_documents(docs)
 
 
