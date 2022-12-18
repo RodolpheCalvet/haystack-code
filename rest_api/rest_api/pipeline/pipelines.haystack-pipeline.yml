@@ -36,7 +36,7 @@ pipelines:
     nodes:
       - name: Retriever
         inputs: [Query]
-      - name: Reader
+      - name: Generator
         inputs: [Retriever]
   - name: indexing
     nodes:
