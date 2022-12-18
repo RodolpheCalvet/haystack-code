@@ -12,11 +12,10 @@ components:    # define all the building-blocks for Pipeline
     params:
       document_store: DocumentStore    # params can reference other components defined in the YAML
       top_k: 5
-  - name: RAGenerator   # custom-name for the component; helpful for visualization & debugging
+  - name: Reader       # custom-name for the component; helpful for visualization & debugging
     type: FARMReader    # Haystack Class name for the component
-    # https://docs.haystack.deepset.ai/docs/answer_generator#usage
     params:
-      model_name_or_path: facebook/rag-sequence-nq
+      model_name_or_path: deepset/roberta-base-squad2
       context_window_size: 500
       return_no_answer: true
   - name: TextFileConverter
