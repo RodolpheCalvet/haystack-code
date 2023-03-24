@@ -1,0 +1,83 @@
+demi jojurn
+44eur
+50eur
+11m3
+
+
+INSTALL HAYSTACK 
+
+conda create -n haystack python=3.8
+
+pour switch kernel à l'intérieur du nb
+python -m ipykernel install --user --name haystack --display-name haystack
+
+pour install ext nb, install terminado en lien avec le shell dans fichier de conf jupyter
+conda install -c conda-forge jupyter_contrib_nbextensions
+
+conda activate sechay
+python -m pip install farm-haystack[all] -f https://download.pytorch.org/whl/torch_stable.html
+
+check install ok:
+jupyter notebook # et voir si package reconnu haystack en tournant une cellule
+conda list --export > sechayAfterSechay.txt
+conda clean --yes --all
+
+********************************haystack nok ::
+
+essai 1 (hier soir)
+python3810
+python -m pip install farm-haystack[all] -f https://download.pytorch.org/whl/torch_stable.html
+-> pb avec faiss, numba pbs..
+
+essai 2 ce midi
+python 38 
+python -m pip install -e .[all] 
+-> sembla pas recommandé par la doc pour windows
+
+
+*********************************
+CHECK JUPYTER
+
+Msgs d'erreur
+
+*********************************
+*********************************
+INSTALL ELASTICSEARCH 8.5.3 windows  :: ET NON il fallait install elastic 792 !! cf nb haystack: bug sur version 8
+
+download from web dans
+C:/elasticsearch-7.9.2
+
+puis dans YML at
+C:/elasticsearch-7.9.2/config/elasticsearch.yml
+
+cluster.name: clusterElasticSearch
+node.name: elasticNode1
+
+path.data: C:/elasticsearch-7.9.2/data
+path.logs: C:/elasticsearch-7.9.2/logs
+bootstrap.memory_lock: true
+
+puis en bas vs pb bootstrap https://stackoverflow.com/questions/42300463/elasticsearch-bootstrap-checks-failing
+http.host: 0.0.0.0
+transport.host: 127.0.0.1
+
+puis pb despace lisk limite sur jacky, hack en changeant le "watermark" en ajoutant dans elasticsearch.yml: https://mincong.io/2021/04/10/disk-watermarks-in-elasticsearch/
+avec des : pas des =du tuto
+cluster.routing.allocation.disk.watermark.low: 20gb
+cluster.routing.allocation.disk.watermark.high: 10gb
+cluster.routing.allocation.disk.watermark.flood_stage: 5gb
+
+puis disable geoip indexing download suite à une ERROR en rapport
+https://stackoverflow.com/questions/72597824/org-elasticsearch-elasticsearchexception-not-all-primary-shards-of-geoip-data
+elasticsearch.yml file a nouveau
+ingest.geoip.downloader.enabled: false
+
+
+
+§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§
+run avec
+cd C:/elasticsearch-7.9.2
+bin/elasticsearch.bat
+
+
+

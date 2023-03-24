@@ -1,0 +1,167 @@
+FEB 2023****************************************************************************
+
+conda create -n haystack3 python=3.8
+conda activate haystack3
+
+//conda install git  #//https://stackoverflow.com/questions/46076754/use-package-from-github-in-conda-virtual-environment
+//conda install pip
+
+python -m pip install farm-haystack[all] -f https://download.pytorch.org/whl/torch_stable.html
+
+python3 -m pip install ipykernel
+python -m ipykernel install --user --name haystack3 --display-name haystack3
+
+conda list
+
+cd to home puis
+jupyter notebook
+
+
+
+
+
+
+
+
+
+DECEMBRE 2022*******************************************************************************
+
+Collab Google et Haystack
+*****************************************
+***** ou seulement pdm*********************
+
+1.conda create -n haystack python=3.7 jupyter=1.0.0  --yes
+2.conda activate haystack
+
+3.conda install cpuonly -c pytorch
+conda install -c conda-forge transformers==4.25.1
+3b python -m ipykernel install --user --name haystack --display-name haystack
+
+6.python -m pip install farm-haystack[all]
+ET PAS 
+python -m pip install farm-haystack[all] -f https://download.pytorch.org/whl/torch_stable.html
+
+7.conda list --export > sechayAfterSechay.txt
+
+check install ok:
+jupyter notebook # et voir si package reconnu haystack en tournant une cellule
+5.conda list --export > sechayAfterSechay.txt
+conda clean --yes --all
+
+
+on aurait pu essayer àa :
+4.python -m pip install transformers[torch]==4.25.1
+Trans et pyto en un coup
+********************************************
+********************************historique de mes essais******************************************************
+
+packages pip listés là : https://pypi.org/
+doc pip pytthon :
+https://docs.python.org/3/tutorial/venv.html
+https://docs.python.org/3/installing/index.html#installing-index
+
+update anaconda est une bonne idée : la seule fois où je le fais il propose 10000  modifs! 
+conda update -n base -c conda-forge conda
+
+Acitiver permutations d'envs à l'intérieur d'un nb!
+python -m ipykernel install --user --name nlu --display-name nlu
+
+Belle doc avec index clean sur les envs ! :
+https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html
+
+Install pytorch à part ! :
+Commande du prof NLU pour install Pytorch : cf son lien https://pytorch.org/get-started/locally/
+conda install pytorch torchvision torchaudio cpuonly -c pytorch
+
+BONUS : voir l'existant avant une install : conda search pytorch --envs --info, si on veut tous envs confondus)
+
+Mais d'abord dans flow NLU : fresh install ! (intéresssant, bonne pratique cf)
+************RAPPEL FLOW POUR CREER ENV NLU  (cf nb setup) ********************
+1. conda create -n nlu python=3.9 anaconda			(notere : anaconda facultatif et pas install pour haystack)
+1. conda activate nlu
+2. conda install pytorch cpuonly -c pytorch        (cf ci-dessus MAIS EN RETIRANT torchvision torchaudio qui est install dans les reqs!)
+3. python -m pip install -r requirementsNLU.txt 	(install vraiment clean du premier coup en retirant les contraintes du profs sur torchvision/audio)
+
+Bonus : conda list (list les packages de l'env)
+Bonus : conda env list (pour voir tous les envs)
+Bonus : copy l'env clean avant essai sur haystack : conda create -n nluClean --clone nlu  (fait une balise pour ressayer si install haystack ou nb NOK, juste un peu longuet)
+
+Bonus : conda remove --name myenv --all (si besoin)
+
+***************************** Si  Sauvegarde de la conf : 
+Dans les deux cas ci-dessous on récup pip + anaconda, toutes les deps 
+1.    python -m pip freeze > configCheckPipFreezeInexploit.txt,
+noter : donne un fichier un peu moche avec des @, 
+2.    conda env export             > configCheck.yml,   (-> format pkg:version:build)
+OU    conda env export --no-builds > configCheck.yml,   (-> format pkg:version)         
+
+3. conda list --export > package-list.txt
+il semble que ce soit la solution simple pour avoir directement ce qui sera le nouveau txt pour exporter, j'avais pas vu! (plus de yml alors...)
+
+cf doc du user guide anaconda et pas pages commandes !!!! : https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html?highlight=export%20env#exporting-the-environment-yml-file
+ET cleaner le fichier (on garde que les pip de fin de fichier et on supprime les padd ) 
+il faudrait automatiser..(yml->txt!??, et check https://stackoverflow.com/questions/41274007/anaconda-export-environment-file)
+
+bref, ce qui donne le fichier env_colllab.txt, nom évocateur puisque le but est de l'upload sur collab! (c'est un nouveau requirements.txt donc...)
+
+
+************ON CONTINUE L INSTALL EN LOCAL POUR SIMU AVEC :::  AJOUT DE HAYSTACK  *********************************************************
+
+puis install package haystack pour NLP : commande officielle windows:
+python -m pip install farm-haystack[all] -f https://download.pytorch.org/whl/torch_stable.html  ne pas oublier [all] !!
+
+NOTE : download de 2GB  : " Collecting torch<1.13,>1.9
+il download une wheel cu166/torch-1.12
+
+VALIDER que les premières cellules dans le nb trouvent le module haystack
+
+***************** resumé ************************
+conda create -n haystack python=3.8
+conda activate haystack
+conda install pytorch cpuonly -c pytorch    # mais ! haystack reinstall pytorch...
+python -m pip install -r requirementsNLU.txt  # avec contraintes relachées sur les trois torch, aussi torch vision reinstall torch..
+conda list --export > hskBeforeHsk.txt
+conda create -n hskBeforeHsk --clone haystack
+python -m pip install farm-haystack[all] -f https://download.pytorch.org/whl/torch_stable.html  ne pas oublier [all] !!
+conda list --export > hskAfterHsk.txt
+
+Check nb voit package haystack
+si ok
+Utiliser le fichier si besoin de retravailler sur tutos haystack
+
+
+************************************COLLAB*********************************************************************
+
+
+
+Puis dans collab on veut le meme setting qu'en local donc on commence par upadte anaconda à la version locale
+qui garantit dependencies ok, puis on passe le env.txt (qui lui correspond aux pip faits en local)
+
+%%bash
+conda update conda==4.9.2
+python -m pip install -r env_collab.txt
+ 
+C'est OK !
+puis
+
+pip install --upgrade pip
+pip3 install farm-haystack
+OK
+
+pip install --upgrade pip
+pip install git+https://github.com/deepset-ai/haystack.git#egg=farm-haystack[colab]
+fait doublon par erreur mais OK
+ 
+ 
+Commandes bash dans notebook Collab
+
+cf : nb haystack et https://docs.python.org/3/tutorial/venv.html
+
+%%bash
+python -m pip list
+
+%%bash
+python -m pip freeze
+
+%%bash
+python -m pip freeze > requirements.txt
